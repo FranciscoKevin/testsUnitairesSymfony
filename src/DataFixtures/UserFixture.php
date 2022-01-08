@@ -17,11 +17,12 @@ class UserFixture extends Fixture
             $user->setPrenom("Prénom");
             $user->setNom("Nom");
             $user->setPassword("Monsupermotdepasse");
+            $user->setTelephone("0653532290");
             $user->setAPropos("What else ?");
             $user->setInstagram("Instagram");
+            $manager->persist($user);
 
         }
-
         $manager->flush();
     }
 }

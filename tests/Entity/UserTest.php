@@ -68,6 +68,7 @@ class UserTest extends TestCase
         $this->assertEmpty($user->getPrenom());
         $this->assertEmpty($user->getNom());
         $this->assertEmpty($user->getPassword());
+        $this->assertEmpty($user->getTelephone());
         $this->assertEmpty($user->getAPropos());
         $this->assertEmpty($user->getInstagram());
     }

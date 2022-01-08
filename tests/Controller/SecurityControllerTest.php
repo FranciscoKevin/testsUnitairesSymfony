@@ -7,6 +7,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SecurityControllerTest extends WebTestCase
 {
+    /**
+     * Test la route /login
+     *
+     * @return void
+     */
     public function testDisplayLogin(): void 
     {
         $client = static::createClient();
@@ -17,6 +22,11 @@ class SecurityControllerTest extends WebTestCase
         $this->assertSelectorNotExists("alert alert-danger");
     }
 
+    /**
+     * Test la connexion utilisateur en cas d'erreur
+     *
+     * @return void
+     */
     public function testLoginWithBadCredentials(): void 
     {
         $client = static::createClient();
@@ -32,6 +42,11 @@ class SecurityControllerTest extends WebTestCase
         $this->assertSelectorExists("alert alert-danger");
     }
 
+    /**
+     * Test la connexion utilisateur en cas de succés
+     *
+     * @return void
+     */
     public function testSuccessfullLogin(): void 
     {
         $client = static::createClient();
