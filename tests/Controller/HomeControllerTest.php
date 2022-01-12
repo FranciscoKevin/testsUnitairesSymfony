@@ -43,7 +43,7 @@ class HomeControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request("GET", "/auth");
 
-        $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
     }
 
     /**

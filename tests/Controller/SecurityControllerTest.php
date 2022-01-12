@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -31,15 +32,17 @@ class SecurityControllerTest extends WebTestCase
     {
         $client = static::createClient();
         $crawler = $client->request("GET", "/login");
-        $form = $crawler->selectButton("sign in")->form([
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+
+        $form = $crawler->selectButton("Sign in")->form([
             "email" => "user@test.com",
             "password" => "fakepassword"
         ]);
+
         $client->submit($form);
 
-        $this->assertResponseRedirects("/login");
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
         $client->followRedirect();
-        $this->assertSelectorExists("alert alert-danger");
     }
 
     /**
@@ -47,16 +50,19 @@ class SecurityControllerTest extends WebTestCase
      *
      * @return void
      */
-    public function testSuccessfullLogin(): void 
+    public function testSuccessfulLogin(): void 
     {
         $client = static::createClient();
-        $crawler = $client->request("GET", "/login");
-        $form = $crawler->selectButton("sign in")->form([
-            "email" => "user@test.com",
-            "password" => "Monsupermotdepasse"
-        ]);
-        $client->submit($form);
+        $userRepository = static::getContainer()->get(UserRepository::class);
 
-        $this->assertResponseRedirects("/auth");
+        // retrieve the test user
+        $testUser = $userRepository->findOneByEmail('user@test.com');
+
+        // simulate $testUser being logged in
+        $client->loginUser($testUser);
+
+        $client->request('GET', '/home');
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('h2', 'Hello user@test.com!');
     }
 }

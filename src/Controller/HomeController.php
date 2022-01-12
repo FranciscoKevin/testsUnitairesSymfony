@@ -19,6 +19,6 @@ class HomeController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function auth(): Response
     {
-        return $this->render('home/index.html.twig');
+        return $this->render('home/auth.html.twig');
     }
 }
